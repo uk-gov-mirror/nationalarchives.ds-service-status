@@ -282,6 +282,7 @@ $refresh-banner-height: 2.5rem;
 .tna-heartbeats {
   height: 2rem;
   margin-top: spacing.space(1);
+  margin-bottom: spacing.space(1);
   padding-top: spacing.space(1.25);
 
   display: flex;
@@ -329,9 +330,31 @@ $refresh-banner-height: 2.5rem;
     z-index: 1;
 
     font-size: 0;
+    line-height: 2rem;
+
+    &::before {
+      margin-top: 0.25rem;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: absolute;
+      top: 100%;
+      right: 0;
+      left: 0;
+
+      font-size: 10px;
+      line-height: 1;
+      @include colour.colour-font("accent-background");
+    }
 
     &--status-down {
       @include colour.pink-accent;
+
+      &::before {
+        --fa: "\f071";
+      }
     }
 
     &--status-up {
@@ -344,25 +367,11 @@ $refresh-banner-height: 2.5rem;
 
     &--status-maintenance {
       @include colour.blue-accent;
+
+      &::before {
+        --fa: "\f0ad";
+      }
     }
-
-    // &--status-up + &--status-down,
-    // &--status-pending + &--status-down {
-    //   &::after {
-    //     content: "❌";
-
-    //     width: 1rem;
-
-    //     position: absolute;
-    //     top: 100%;
-    //     left: 50%;
-    //     z-index: 2;
-
-    //     transform: translateX(-50%);
-
-    //     @include typography.font-size(16);
-    //   }
-    // }
   }
 
   @include media.on-mobile {
@@ -377,9 +386,15 @@ $refresh-banner-height: 2.5rem;
     }
   }
 
-  &--tight {
-    gap: 0;
-  }
+  // @media (pointer: fine) {
+  //   &:hover &__item {
+  //     opacity: 0.35;
+
+  //     &:hover {
+  //       opacity: 1;
+  //     }
+  //   }
+  // }
 }
 
 .tna-incident-calendar {

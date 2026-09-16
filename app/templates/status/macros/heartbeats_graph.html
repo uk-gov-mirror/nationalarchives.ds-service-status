@@ -1,9 +1,14 @@
-{% macro heartbeats_graph(item_heartbeats, tight, show_n_heartbeats_on_mobile, margin_top, newestHeartbeatLabel) %}
-<ol class="tna-heartbeats{{ ' tna-heartbeats--tight' if tight else '' }}{{ ' tna-!--margin-top-' ~ margin_top if margin_top else '' }}" data-oldest-heartbeat="{{ (item_heartbeats | first).time | time_ago }}" data-oldest-heartbeat-mobile="{{ (item_heartbeats[show_n_heartbeats_on_mobile] if show_n_heartbeats_on_mobile else (item_heartbeats | first)).time | time_ago }}" data-newest-heartbeat="{{ newestHeartbeatLabel if newestHeartbeatLabel else ((item_heartbeats | last).time | time_ago) }}">
+{% macro heartbeats_graph(item_heartbeats, show_n_heartbeats_on_mobile, margin_top, newestHeartbeatLabel, showTime) %}
+<ol class="tna-heartbeats{{ ' tna-!--margin-top-' ~ margin_top if margin_top else '' }}" data-oldest-heartbeat="{{ (item_heartbeats | first).time | time_ago }}" data-oldest-heartbeat-mobile="{{ (item_heartbeats[show_n_heartbeats_on_mobile] if show_n_heartbeats_on_mobile else (item_heartbeats | first)).time | time_ago }}" data-newest-heartbeat="{{ newestHeartbeatLabel if newestHeartbeatLabel else ((item_heartbeats | last).time | time_ago) }}">
   {%- for heartbeat in item_heartbeats %}
   {%- set heartbeat_item_data = heartbeat.status | pretty_uptime_kuma_status %}
-  <li class="tna-heartbeats__item tna-heartbeats__item--status-{{ heartbeat_item_data.status_class }}{{- ' tna-heartbeats__item--hide-on-mobile' if (show_n_heartbeats_on_mobile and (show_n_heartbeats_on_mobile and loop.index < show_n_heartbeats_on_mobile)) else '' -}}" title="{{ heartbeat.time | pretty_datetime }} (UTC): {{ heartbeat_item_data.title }}">
-    <time datetime="{{ heartbeat.time }}Z">{{ heartbeat.time | pretty_datetime }} (UTC)</time>: {{ heartbeat_item_data.title }}
+  <li class="tna-heartbeats__item tna-heartbeats__item--status-{{ heartbeat_item_data.status_class }}{{- ' tna-heartbeats__item--hide-on-mobile' if (show_n_heartbeats_on_mobile and (show_n_heartbeats_on_mobile and loop.index < show_n_heartbeats_on_mobile)) else '' }} fa-solid" title="{{ ((heartbeat.time | pretty_datetime) ~ ' (UTC)') if showTime else (heartbeat.time | date_from_datetime_string | pretty_date) }}: {{ heartbeat_item_data.title }}">
+    {% if showTime %}
+    <time datetime="{{ heartbeat.time | any_datetime_string_to_iso_8601_datetime }}">{{ heartbeat.time | pretty_datetime }} (UTC)</time>
+    {% else %}
+    <time datetime="{{ heartbeat.time | date_from_datetime_string }}">{{ heartbeat.time | date_from_datetime_string | pretty_date }}</time>
+    {% endif -%}
+    : {{ heartbeat_item_data.title }}
   </li>
   {%- endfor %}
 </ol>

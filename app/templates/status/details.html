@@ -143,7 +143,7 @@
       {%- endif %}
     </dl>
 
-    {{ heartbeats_graph(incident_calendar_heartbeats(recent_incidents, days), False, None, 'm', 'Today') }}
+    {{ heartbeats_graph(incident_calendar_heartbeats(recent_incidents, days), None, 'm', 'Today') }}
     
     {%- if recent_incidents %}
       {% call tnaDetails({"title": "Timelines of incidents (experimental)"}) %}
@@ -216,7 +216,7 @@
       </dl>
       {%- endif %}
 
-      {{ heartbeats_graph(incident_calendar_heartbeats(child_recent_incidents, days), False, None, 'm', 'Today') }}
+      {{ heartbeats_graph(incident_calendar_heartbeats(child_recent_incidents, days), None, 'm', 'Today') }}
 
       {%- if child_recent_incidents %}
       {% call tnaDetails({"title": "Timelines of incidents (experimental)"}) %}

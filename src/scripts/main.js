@@ -38,14 +38,20 @@ document.querySelectorAll("time[datetime]").forEach(($el) => {
   $el.setAttribute("title", $el.textContent);
   const date = new Date($el.getAttribute("datetime"));
   if (date) {
-    $el.textContent = `${date.toLocaleDateString("en-GB", {
+    let textContent = `${date.toLocaleDateString("en-GB", {
       year: "numeric",
       month: "long",
       day: "numeric",
-    })}, ${date.getHours().toString().padStart(2, "0")}:${date
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}:${date.getSeconds().toString().padStart(2, "0")}`;
+    })}`;
+
+    if (date.getHours() && date.getMinutes() && date.getSeconds()) {
+      textContent += `, ${date.getHours().toString().padStart(2, "0")}:${date
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")}:${date.getSeconds().toString().padStart(2, "0")}`;
+    }
+
+    $el.textContent = textContent;
   }
   // updateTimeElements($el);
   // setInterval(() => {

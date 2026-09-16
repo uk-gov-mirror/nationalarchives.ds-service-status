@@ -173,7 +173,7 @@
         <p class="tna-!--margin-top-xs">
           <strong>{{ most_recent_item_heartbeat_data.title }}</strong>
         </p>
-        {{ heartbeats_graph(item_heartbeats, False, show_n_heartbeats_on_mobile) }}
+        {{ heartbeats_graph(item_heartbeats, show_n_heartbeats_on_mobile, None, None, True) }}
         
         {%- set recent_incidents = item_heartbeats | previous_incidents %}
         {%- if recent_incidents %}

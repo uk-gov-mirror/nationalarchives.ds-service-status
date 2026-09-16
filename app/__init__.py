@@ -1,11 +1,13 @@
 import logging
 import os
+from datetime import UTC, datetime
 
 import sentry_sdk
 from flask import Flask
 from jinja2 import ChoiceLoader, PackageLoader
-from tna_utilities.datetime import pretty_date, pretty_datetime
-from tna_utilities.datetime import seconds_to_duration as seconds_to_duration_raw
+from tna_utilities.datetime import get_date_from_string, pretty_date
+from tna_utilities.datetime import pretty_datetime as tna_pretty_datetime
+from tna_utilities.datetime import seconds_to_duration as tna_seconds_to_duration
 from tna_utilities.string import slugify
 
 from app.lib.cache import cache
@@ -86,9 +88,30 @@ def create_app(config_class):
     )
 
     def seconds_to_duration(value):
-        return seconds_to_duration_raw(value, simplify=True)
+        return tna_seconds_to_duration(value, simplify=True)
+
+    def pretty_datetime(value):
+        return tna_pretty_datetime(value, show_seconds=True)
+
+    def date_from_datetime_string(value):
+        date_from_value = get_date_from_string(value)
+        if not date_from_value:
+            return None
+        if date_from_value.tzinfo is None:
+            date_from_value = date_from_value.replace(tzinfo=UTC)
+        return date_from_value.date()
+
+    def any_datetime_string_to_iso_8601_datetime(value):
+        date_from_value = get_date_from_string(value)
+        if not date_from_value:
+            return None
+        if date_from_value.tzinfo is None:
+            date_from_value = date_from_value.replace(tzinfo=UTC)
+        return date_from_value.isoformat()
 
     app.add_template_filter(average_incident_time)
+    app.add_template_filter(any_datetime_string_to_iso_8601_datetime)
+    app.add_template_filter(date_from_datetime_string)
     app.add_template_filter(incident_count)
     app.add_template_filter(longest_incident_time)
     app.add_template_filter(markdown)

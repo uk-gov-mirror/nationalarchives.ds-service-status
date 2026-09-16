@@ -7,13 +7,13 @@
     {%- if incident.has_start %}
       <br>
       Started:
-      <time datetime="{{ incident.start.time }}Z">{{ incident.start.time | pretty_datetime }} (UTC)</time>
+      <time datetime="{{ incident.start.time | any_datetime_string_to_iso_8601_datetime }}">{{ incident.start.time | pretty_datetime }} (UTC)</time>
     {%- endif %}
 
     {%- if incident.has_end %}
       <br>
       Resolved:
-      <time datetime="{{ incident.end.time }}Z">{{ incident.end.time | pretty_datetime }} (UTC)</time>
+      <time datetime="{{ incident.end.time | any_datetime_string_to_iso_8601_datetime }}">{{ incident.end.time | pretty_datetime }} (UTC)</time>
     {%- endif %}
 
     {%- if incident.duration_seconds -%}
