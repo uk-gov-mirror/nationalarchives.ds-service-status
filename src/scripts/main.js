@@ -43,14 +43,12 @@ document.querySelectorAll("time[datetime]").forEach(($el) => {
       month: "long",
       day: "numeric",
     })}`;
-
-    if (date.getHours() && date.getMinutes() && date.getSeconds()) {
+    if (date.getHours() || date.getMinutes() || date.getSeconds()) {
       textContent += `, ${date.getHours().toString().padStart(2, "0")}:${date
         .getMinutes()
         .toString()
         .padStart(2, "0")}:${date.getSeconds().toString().padStart(2, "0")}`;
     }
-
     $el.textContent = textContent;
   }
   // updateTimeElements($el);
