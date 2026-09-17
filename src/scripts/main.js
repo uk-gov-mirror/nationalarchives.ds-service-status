@@ -44,10 +44,11 @@ document.querySelectorAll("time[datetime]").forEach(($el) => {
       day: "numeric",
     })}`;
     if (date.getHours() || date.getMinutes() || date.getSeconds()) {
-      textContent += `, ${date.getHours().toString().padStart(2, "0")}:${date
-        .getMinutes()
-        .toString()
-        .padStart(2, "0")}:${date.getSeconds().toString().padStart(2, "0")}`;
+      textContent += `, ${date.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      })}`;
     }
     $el.textContent = textContent;
   }
